@@ -40,7 +40,7 @@ class MoviesController < ApplicationController
      @release_css = 'hilite'
     end
     
-    if (params[:ratings].nil?) and (not params[:key].nil?) 
+    if (params[:ratings].nil?) and (params[:key].nil?) 
       cached_params = { key: session[:key], ratings: session[:ratings] }
       flash.keep
       redirect_to movies_path(cached_params)
