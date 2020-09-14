@@ -41,10 +41,10 @@ class MoviesController < ApplicationController
     end
     
     if (not params[:ratings]) or (not params[:key])
-      cached_params = { key: session[:key], ratings: session[:ratings] }
-      flash.keep
-      redirect_to movies_path(cached_params)
-      return
+      #cached_params = { key: session[:key], ratings: session[:ratings] }
+      #flash.keep
+      #redirect_to movies_path(cached_params)
+      #return
     end
     
   end
