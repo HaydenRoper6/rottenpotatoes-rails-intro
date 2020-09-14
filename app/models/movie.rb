@@ -3,7 +3,7 @@ class Movie < ActiveRecord::Base
         self.all.pluck(:rating).uniq.sort
     end
     def self.with_ratings(ratings)
-        self.where("rating: params[:ratings]")        
+        self.where("rating: [:ratings].keys")        
     end
     
 end

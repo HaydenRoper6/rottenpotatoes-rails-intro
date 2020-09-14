@@ -11,20 +11,40 @@ class MoviesController < ApplicationController
   end
 
   def index
-   
+
     @all_ratings = Movie.all_ratings
+
+    if params[:key]
+      session[:key] = params[:key]
+    end
+    
     if params[:ratings]
-      @movies = Movie.where(rating: params[:ratings].keys)
+      session[:ratings] = params[:ratings]
+    end
+    
+   
+   
+    if !(session[:ratings].nil?) and session[:ratings].is_a?(Hash)
+      @movies = Movie.where(rating: session[:ratings].keys)
+      #@checked_ratings = session[:ratings].keys
     else
       @movies = Movie.all
+      #@checked_ratings = @all_ratings
     end
-    #@movies = Movie.with_ratings(params[:ratings].keys)
-    if params[:key] == 'title'
-     @movies = Movie.order(:title)
+    
+    if session[:key] == 'title'
+     @movies = @movies.order(:title)
      @title_css = 'hilite'
-    elsif params[:key] == 'releases'
-     @movies = Movie.order(:release_date)
+    elsif session[:key] == 'releases'
+     @movies = @movies.order(:release_date)
      @release_css = 'hilite'
+    end
+    
+    if (not params[:ratings]) or (not params[:key])
+      cached_params = { key: session[:key], ratings: session[:ratings] }
+      flash.keep
+      redirect_to movies_path(cached_params)
+      return
     end
     
   end
@@ -54,6 +74,7 @@ class MoviesController < ApplicationController
     @movie = Movie.find(params[:id])
     @movie.destroy
     flash[:notice] = "Movie '#{@movie.title}' deleted."
+    session.clear
     redirect_to movies_path
   end
 
