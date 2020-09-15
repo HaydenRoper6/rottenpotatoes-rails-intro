@@ -39,13 +39,7 @@ class MoviesController < ApplicationController
      @movies = @movies.order(:release_date)
      @release_css = 'hilite'
     end
-    
-    if (params[:ratings].nil?) and (params[:key].nil?) 
-      cached_params = { key: session[:key], ratings: session[:ratings] }
-      flash.keep
-      redirect_to movies_path(cached_params)
-      return
-    end
+
     
   end
 
